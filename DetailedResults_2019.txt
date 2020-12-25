@@ -1,0 +1,127 @@
+Valimisringkond,Erakond,Häälte arv
+1,Eesti Vabaerakond,464
+1,Eesti Reformierakond,16299
+1,Erakond Eestimaa Rohelised,1812
+1,Sotsiaaldemokraatlik Erakond,5683
+1,Elurikkuse Erakond,639
+1,Eesti Konservatiivne Rahvaerakond,6361
+1,Erakond Eesti 200,2635
+1,Eesti Keskerakond,16950
+1,Eestimaa Ühendatud Vasakpartei,70
+1,Isamaa Erakond,4950
+1,Üksikkandidaadid,328
+2,Eesti Vabaerakond,451
+2,Eesti Reformierakond,18400
+2,Erakond Eestimaa Rohelised,1471
+2,Sotsiaaldemokraatlik Erakond,5896
+2,Elurikkuse Erakond,682
+2,Eesti Konservatiivne Rahvaerakond,7110
+2,Erakond Eesti 200,3761
+2,Eesti Keskerakond,26335
+2,Eestimaa Ühendatud Vasakpartei,113
+2,Isamaa Erakond,5416
+2,Üksikkandidaadid,329
+3,Eesti Vabaerakond,714
+3,Eesti Reformierakond,16209
+3,Erakond Eestimaa Rohelised,1227
+3,Sotsiaaldemokraatlik Erakond,4651
+3,Elurikkuse Erakond,544
+3,Eesti Konservatiivne Rahvaerakond,7055
+3,Erakond Eesti 200,2315
+3,Eesti Keskerakond,11945
+3,Eestimaa Ühendatud Vasakpartei,37
+3,Isamaa Erakond,5086
+3,Üksikkandidaadid,99
+4,Eesti Vabaerakond,1078
+4,Eesti Reformierakond,34571
+4,Erakond Eestimaa Rohelised,1686
+4,Sotsiaaldemokraatlik Erakond,7621
+4,Elurikkuse Erakond,1443
+4,Eesti Konservatiivne Rahvaerakond,16638
+4,Erakond Eesti 200,3669
+4,Eesti Keskerakond,13681
+4,Eestimaa Ühendatud Vasakpartei,83
+4,Isamaa Erakond,10094
+4,Üksikkandidaadid,165
+5,Eesti Vabaerakond,644
+5,Eesti Reformierakond,9150
+5,Erakond Eestimaa Rohelised,639
+5,Sotsiaaldemokraatlik Erakond,3414
+5,Elurikkuse Erakond,350
+5,Eesti Konservatiivne Rahvaerakond,6894
+5,Erakond Eesti 200,1404
+5,Eesti Keskerakond,5736
+5,Eestimaa Ühendatud Vasakpartei,13
+5,Isamaa Erakond,3347
+5,Üksikkandidaadid,406
+6,Eesti Vabaerakond,185
+6,Eesti Reformierakond,6396
+6,Erakond Eestimaa Rohelised,310
+6,Sotsiaaldemokraatlik Erakond,2428
+6,Elurikkuse Erakond,175
+6,Eesti Konservatiivne Rahvaerakond,5768
+6,Erakond Eesti 200,828
+6,Eesti Keskerakond,5371
+6,Eestimaa Ühendatud Vasakpartei,12
+6,Isamaa Erakond,5461
+7,Eesti Vabaerakond,149
+7,Eesti Reformierakond,3769
+7,Erakond Eestimaa Rohelised,204
+7,Sotsiaaldemokraatlik Erakond,4008
+7,Elurikkuse Erakond,106
+7,Eesti Konservatiivne Rahvaerakond,2234
+7,Erakond Eesti 200,1011
+7,Eesti Keskerakond,13700
+7,Eestimaa Ühendatud Vasakpartei,65
+7,Isamaa Erakond,1767
+8,Eesti Vabaerakond,281
+8,Eesti Reformierakond,9777
+8,Erakond Eestimaa Rohelised,377
+8,Sotsiaaldemokraatlik Erakond,4682
+8,Elurikkuse Erakond,350
+8,Eesti Konservatiivne Rahvaerakond,8389
+8,Erakond Eesti 200,1060
+8,Eesti Keskerakond,6253
+8,Eestimaa Ühendatud Vasakpartei,13
+8,Isamaa Erakond,6176
+8,Üksikkandidaadid,90
+9,Eesti Vabaerakond,571
+9,Eesti Reformierakond,11399
+9,Erakond Eestimaa Rohelised,616
+9,Sotsiaaldemokraatlik Erakond,3891
+9,Elurikkuse Erakond,439
+9,Eesti Konservatiivne Rahvaerakond,9362
+9,Erakond Eesti 200,1789
+9,Eesti Keskerakond,6438
+9,Eestimaa Ühendatud Vasakpartei,34
+9,Isamaa Erakond,7308
+10,Eesti Vabaerakond,837
+10,Eesti Reformierakond,15504
+10,Erakond Eestimaa Rohelised,939
+10,Sotsiaaldemokraatlik Erakond,5087
+10,Elurikkuse Erakond,601
+10,Eesti Konservatiivne Rahvaerakond,7641
+10,Erakond Eesti 200,2677
+10,Eesti Keskerakond,6099
+10,Eestimaa Ühendatud Vasakpartei,30
+10,Isamaa Erakond,5416
+11,Eesti Vabaerakond,606
+11,Eesti Reformierakond,10029
+11,Erakond Eestimaa Rohelised,440
+11,Sotsiaaldemokraatlik Erakond,5034
+11,Elurikkuse Erakond,905
+11,Eesti Konservatiivne Rahvaerakond,10644
+11,Erakond Eesti 200,1909
+11,Eesti Keskerakond,9197
+11,Isamaa Erakond,4153
+11,Üksikkandidaadid,173
+12,Eesti Vabaerakond,481
+12,Eesti Reformierakond,10860
+12,Erakond Eestimaa Rohelised,506
+12,Sotsiaaldemokraatlik Erakond,2780
+12,Elurikkuse Erakond,624
+12,Eesti Konservatiivne Rahvaerakond,11575
+12,Erakond Eesti 200,1390
+12,Eesti Keskerakond,7913
+12,Eestimaa Ühendatud Vasakpartei,41
+12,Isamaa Erakond,5045
