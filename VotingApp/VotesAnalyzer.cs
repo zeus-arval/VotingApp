@@ -9,7 +9,7 @@ namespace VotingApp
     public class VotesAnalyzer
     {
         private Dictionary<int, int> _electoralThresholds = new Dictionary<int, int>(); // Dictionary for electoral thresholds
-        public Dictionary<int, string> _pathNames; // Dictionary for using ElectionResultsXXXX.txt path's name by year
+        public Dictionary<int, string> _pathNames = new Dictionary<int, string>(); // Dictionary for using ElectionResultsXXXX.txt path's name by year
         public Dictionary<int, List<Party>> _parties = new Dictionary<int, List<Party>>(); // Dictionary for using Party's info by year
         public Dictionary<int, int> _totalVotesSum = new Dictionary<int, int>(); // Dictionary for using total sums of votes by year
         public Dictionary<int, int> _districtVotesSum = new Dictionary<int, int>(); // Dictionary for using sums of votes in district by number of district
@@ -18,19 +18,14 @@ namespace VotingApp
         public Dictionary<int, List<Candidate>> _candidateDict = new Dictionary<int, List<Candidate>>(); // Dictionary for using candidate's info by candidate's district
         public VotesAnalyzer()
         {
-            _pathNames = new Dictionary<int, string>() 
-            {
-                { 2019, "ElectionResults2019.txt" },
-                { 2015, "ElectionResults2015.txt" },
-                { 2011, "ElectionResults2011.txt" }
-            };
+            FillPathDictionary(); // Filling pathNames dictionary
         }
-        
+
         public void FillCandidateDictionary() // (Test) one object from dictionary
         {   //Method , which creates list in dictionary(_candidateDict) with Candidate objects. Used file PersonalVotes.csv
             if (_candidateDict.Count == 0)
             {
-                using (StreamReader reader = new StreamReader("PersonalVotes.csv"))
+                using (StreamReader reader = new StreamReader(@"C:\Users\37255\source\repos\VotingApp\VotingApp\bin\Debug\netcoreapp3.1\PersonalVotes.csv"))
                 {
                     List<string> strList = new List<string>();
                     string line = "";
@@ -56,7 +51,7 @@ namespace VotingApp
         {   // method for reading every line in file, adding new objects Party with party name and votes and districts to list and returing it as list
             // method can be used only for DetailedResults_2019.txt
             if (_districtName.Count == 0) FillDictionaryDistrictName();
-            using (StreamReader reader = new StreamReader("DetailedResults_2019.txt"))
+            using (StreamReader reader = new StreamReader(@"C:\Users\37255\source\repos\VotingApp\VotingApp\bin\Debug\netcoreapp3.1\DetailedResults_2019.txt"))
             {
                 List<string> strList = new List<string>();
                 string line = "";
@@ -82,7 +77,7 @@ namespace VotingApp
             // Method uses file ElectionRegions.txt
             if (_districtName.Count == 0)
             {
-                using (StreamReader reader = new StreamReader("ElectionRegions.txt"))
+                using (StreamReader reader = new StreamReader(@"C:\Users\37255\source\repos\VotingApp\VotingApp\bin\Debug\netcoreapp3.1\ElectionRegions.txt"))
                 {
                     string line = "";
                     while ((line = reader.ReadLine()) != null)
@@ -92,6 +87,13 @@ namespace VotingApp
                     }
                 }
             }
+        }
+
+        private void FillPathDictionary()
+        {   // Method for filling dictionary to facilitate getting pathName
+            _pathNames.Add(2019, @"C:\Users\37255\source\repos\VotingApp\VotingApp\bin\Debug\netcoreapp3.1\ElectionResults2019.txt");
+            _pathNames.Add(2015, @"C:\Users\37255\source\repos\VotingApp\VotingApp\bin\Debug\netcoreapp3.1\ElectionResults2015.txt");
+            _pathNames.Add(2011, @"C:\Users\37255\source\repos\VotingApp\VotingApp\bin\Debug\netcoreapp3.1\ElectionResults2011.txt");
         }
 
         public List<Party> OverwriteFileToList(int year)
@@ -110,29 +112,15 @@ namespace VotingApp
 
         public int FindElectoralThreshold(int year) // Method 1 (Test)
         {   // Method for returning an amount of votes, which equals to 5%
-            if (ControlTheYear(year))
+            int electoralThreshold = 0;
+            if (!_parties.ContainsKey(year)) _parties[year] = OverwriteFileToList(year); // List with Parties(Party include in votes and name)
+            if (!_electoralThresholds.ContainsKey(year))
             {
-                int electoralThreshold = 0;
-                if (!_parties.ContainsKey(year)) _parties[year] = OverwriteFileToList(year); // List with Parties(Party include in votes and name)
-                if (!_electoralThresholds.ContainsKey(year))
-                {
-                    FindVoteSum(year);
-                    electoralThreshold = (int)(_totalVotesSum[year] * 0.05);
-                    _electoralThresholds.Add(year, electoralThreshold);
-                }
-                return electoralThreshold;
+                FindVoteSum(year);
+                electoralThreshold = (int)(_totalVotesSum[year] * 0.05);
+                _electoralThresholds.Add(year, electoralThreshold);
             }
-            else return 0;
-        }
-
-        private bool ControlTheYear(int year)
-        {
-            if (_pathNames.ContainsKey(year)) return true;
-            else
-            {
-                Console.WriteLine("You've put wrong year");
-                return false;
-            }
+            return electoralThreshold;
         }
 
         public void FindVoteSum(int year)
@@ -150,23 +138,19 @@ namespace VotingApp
 
         public void WriteOutExceededParties(int year) // Method 2
         {   //Method for printing out parties, which exceeded electoral threshold
-            if (ControlTheYear(year))
+            FindExceededParties(year);
+            Console.Write($"In {year} electoral threshold(5%) was ");
+            MakeTextColored(_electoralThresholds[year].ToString(), 0);
+            Console.Write("and exceeded parties were:\n");
+            for (int i = 0; i < _parties[year].Count; i++)
             {
-                FindExceededParties(year);
-                Console.Write("Electoral threshold is ");
-                MakeTextColored(_electoralThresholds[year].ToString(), 0);
-                Console.Write(" and exceeded parties were:\n");
-                for (int i = 0; i < _parties[year].Count; i++)
+                if (_parties[year][i]._isWinner)
                 {
-                    if (_parties[year][i]._isWinner)
-                    {
-                        MakeTextColored($"\t\t{_parties[year][i]._name}", 1);
-                        Console.Write(" with ");
-                        MakeTextColored($"{_parties[year][i]._votes}", 0);
-                        Console.Write(" votes\n");
-                    }
+                    MakeTextColored($"\t\t{_parties[year][i]._name}", 1);
+                    Console.Write(" with ");
+                    MakeTextColored($"{_parties[year][i]._votes}", 0);
+                    Console.Write(" votes\n");
                 }
-                Console.WriteLine("\n");
             }
         }
 
@@ -183,32 +167,27 @@ namespace VotingApp
 
         public void PrintWinnerLoserInfo(int year) // Method 3
         {   //Method for printing out winners and losers
-            if (ControlTheYear(year))
-            {
-                if (!_parties.ContainsKey(year)) _parties[year] = OverwriteFileToList(year); // if dictionary _parties does not have a key = year, create and add a List by year
-                MakeTextColored(year.ToString(), 0);
-                Console.WriteLine("\nWinner party was:");
-                PrintWinnerLoser(true, year);
-                Console.WriteLine("\nLoser party was:");
-                PrintWinnerLoser(false, year);
-                Console.WriteLine("\n");
-            }
+            if (!_parties.ContainsKey(year)) _parties[year] = OverwriteFileToList(year); // if dictionary _parties does not have a key = year, create and add a List by 
+            Console.Write("In year ");
+            MakeTextColored(year.ToString(), 0);
+            Console.WriteLine("\nWinner party was:");
+            PrintWinnerLoser(true, year);
+            Console.WriteLine("\nLoser party was:");
+            PrintWinnerLoser(false, year);
         }
 
         private void PrintWinnerLoser(bool isWinner, int year)
         {   //method for printing out information about winner and loser party 
             string partyName = _parties[year][0]._name;
             int votes = _parties[year][0]._votes;
-            string result = DefineWinnerLoser(partyName, votes, year, isWinner);
-            partyName = result.Split('.').First();
-            votes = int.Parse(result.Split('.').Last());
+            DefineWinnerLoser(partyName, votes, year, isWinner);
             MakeTextColored($"\t{partyName}", 1);
             Console.Write($" with ");
             MakeTextColored(votes.ToString(), 0);
             Console.Write($" votes\n");
         }
 
-        private string DefineWinnerLoser(string partyName, int votes, int year, bool isWinner)
+        private void DefineWinnerLoser(string partyName, int votes, int year, bool isWinner)
         {   //Method for defining min and max amount of votes and loser's and winner's names
             for (int i = 1; i < _parties[year].Count; i++)
             {
@@ -223,7 +202,6 @@ namespace VotingApp
                     partyName = DefinePartyLoserWinnerName(i, votes, year, partyName);
                 }
             }
-            return partyName + "." + votes;
         }
 
         private string DefinePartyLoserWinnerName(int i, int votes, int year, string partyName)
@@ -235,17 +213,12 @@ namespace VotingApp
         public double CalculateLosersLostPercent(int year) // Method 4 (Test)
         {
             double lostPercent = 0;
-            if (ControlTheYear(year))
-            {
-                if (!_parties.ContainsKey(year)) _parties[year] = OverwriteFileToList(year); // if dictionary _parties does not have a key = year, create and add a List by key
-                FindVoteSum(year);
-                if (!_electoralThresholds.ContainsKey(year)) FindElectoralThreshold(year); // if dictionary _electoralThresholds does not contain a key == year, finding and adding 
-                FindExceededParties(year);
-                lostPercent = (double)FindLoserWinnerTotalSum(year, false) / (double)_totalVotesSum[year] * 100;
-                return lostPercent;
-
-            }
-            else throw new Exception("You've put wrong year");
+            if (!_parties.ContainsKey(year)) _parties[year] = OverwriteFileToList(year); // if dictionary _parties does not have a key = year, create and add a List by key
+            FindVoteSum(year);
+            if (!_electoralThresholds.ContainsKey(year)) FindElectoralThreshold(year); // if dictionary _electoralThresholds does not contain a key == year, finding and adding 
+            FindExceededParties(year);
+            lostPercent = (double)FindLoserWinnerTotalSum(year, false) / (double)_totalVotesSum[year] * 100;
+            return lostPercent;
         }
 
         public void PrintLosersLostPercent(int year)
@@ -266,34 +239,27 @@ namespace VotingApp
         }
 
         public int FindWinnersLosersDifference(int year) // Method 5 (Test) 
-        {   //Method for finding losers and Winners difference in votes 
+        {   //Method for finding loasers and Winners difference in votes 
             int difference;
             double lostPercent;
-            if (ControlTheYear(year))
-            {
-                if (!_parties.ContainsKey(year)) _parties[year] = OverwriteFileToList(year); // if dictionary _parties does not have a key = year, create and add a List by key
-                if (!_electoralThresholds.ContainsKey(year)) FindElectoralThreshold(year); // if dictionary _electoralThresholds does not contain a key == year, finding and adding it
-                FindExceededParties(year);
-                lostPercent = CalculateLosersLostPercent(year);
-                difference = FindLoserWinnerTotalSum(year, true) - FindLoserWinnerTotalSum(year, false);
-                Console.WriteLine($"Difference between winners and losers is {difference} votes");
-                return difference;
-            }
-            else throw new Exception("You've put wrong year");
+            if (!_parties.ContainsKey(year)) _parties[year] = OverwriteFileToList(year); // if dictionary _parties does not have a key = year, create and add a List by key
+            if (!_electoralThresholds.ContainsKey(year)) FindElectoralThreshold(year); // if dictionary _electoralThresholds does not contain a key == year, finding and adding it
+            FindExceededParties(year);
+            lostPercent = CalculateLosersLostPercent(year);
+            difference = FindLoserWinnerTotalSum(year, true) - FindLoserWinnerTotalSum(year, false);
+            Console.WriteLine($"Difference between winners and losers is {difference} votes");
+            return difference;
         }
 
         public void WriteOutCalculations(int year) //Method 6
-        {   //Method for printing out calculations from methods 1-5
+        {   //Method for printing out calculations from methods 1-3
             if (!_pathNames.ContainsKey(year))
             {
                 CheckYear(year);
             }
             else
             {
-                WriteOutExceededParties(year); // printing out 1, 2 methods
-                PrintWinnerLoserInfo(year); // printing out 3 method
-                Console.WriteLine($"Percent lost by loser parties is {Math.Round(CalculateLosersLostPercent(year), 2)}%\n"); ; // printing out 4 method
-                FindWinnersLosersDifference(year); // printing out 5 method
+                PrintWinnerLoserInfo(year);
             }
         }
 
@@ -315,7 +281,7 @@ namespace VotingApp
             FindExceededParties(2019);
             double coalitionPercent = CalculateCoalitionOppositionPercents(true);
             double oppositionPercent = CalculateCoalitionOppositionPercents(false);
-            Console.WriteLine($"\nPercent of exceeded coalition parties is {coalitionPercent}% , and of exceeded opposition parties is {oppositionPercent}%");
+            Console.WriteLine($"Percent of exceeded coalition parties is {coalitionPercent}% , and of exceeded opposition parties is {oppositionPercent}%");
         }
 
         public double CalculateCoalitionOppositionPercents(bool isCoalition) // (Test)
@@ -358,6 +324,7 @@ namespace VotingApp
                         sum += _detailedParties[disNum][party]._votes;
                     }
                     _districtVotesSum.Add(disNum, sum);
+                    Console.WriteLine(sum);
                 }
             }
             return _districtVotesSum;
@@ -373,7 +340,7 @@ namespace VotingApp
                 foreach (Party party in _detailedParties[i])
                 {
                     int mandate = (int)(party._votes / _districtName[i]._quota);
-                    double plus = Math.Round(((double)(party._votes / _districtName[i]._quota) - mandate), 2);
+                    double plus = (double)(party._votes / _districtName[i]._quota) - mandate;
                     party._mandates = (plus >= 0.75) ? mandate += 1 : mandate;
                     sum += party._mandates;
                 }
@@ -394,6 +361,7 @@ namespace VotingApp
                 Console.Write(". Parties:\n");
                 foreach (Party party in _detailedParties[i])
                 {
+                    Console.Write($"{party._votes}");
                     MakeTextColored($"\t{party._name}", 1);
                     Console.Write($" got ");
                     MakeTextColored(party._mandates.ToString(), 0);
@@ -423,7 +391,7 @@ namespace VotingApp
             {
                 if (candidate._isMandate)
                 {
-                    MakeTextColored($"\t{candidate._candidateName}", 0);
+                    MakeTextColored($"{candidate._candidateName}", 0);
                     Console.Write($" from {candidate._partyName} with ");
                     MakeTextColored($"{candidate._votes}", 0);
                     Console.Write(" votes\n\n");
@@ -440,7 +408,6 @@ namespace VotingApp
                 if (_candidateDict.Count == 0) FillCandidateDictionary();
                 int count = MakeCandidateMandate(districtNum);
                 if (count > 0) PrintOutMandatesFromDistrict(districtNum);
-                else Console.WriteLine($"District {_districtName[districtNum]._districtName} does not have any personal mandate\n\n");
             }
             else MakeTextColored($"{districtNum} is invalid number of district", 2);
         }
@@ -474,7 +441,7 @@ namespace VotingApp
             FindMandateList(); // filling _detailedParties dictionary, where key is district number and value is list of parties(which contains number of mandates)
             if (_candidateDict.Count == 0) FillCandidateDictionary();// filling _candidateDict dictionary, where key is dicstrict number and value is list of all candidates(which is mandate or not) from district
             Dictionary<int, int> districtMandates = FillMandatesDict();
-            for (int i = 1; i <= districtMandates.Count; i++)
+            for (int i = 1; i < districtMandates.Count; i++)
             {
                 if (districtMandates[i] != 0) 
                 {
