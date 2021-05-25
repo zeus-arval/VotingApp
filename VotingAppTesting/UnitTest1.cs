@@ -178,6 +178,7 @@ namespace VotingAppTesting
             StringAssert.Equals(vote._candidateDict[1][1]._candidateName, "ÕIE-MARI AASMÄE");
             StringAssert.Equals(vote._candidateDict[4][2]._candidateName, "TIIU KUURME");
             StringAssert.Equals(vote._candidateDict[7][3]._candidateName, "INNA ROSE");
+            StringAssert.Contains(vote._candidateDict[7][3]._candidateName, "INNA ROSE");
         }
 
         [TestMethod]
@@ -225,7 +226,7 @@ namespace VotingAppTesting
         {
             Dictionary<int, int> expectedDistrictMandates = new Dictionary<int, int>()
             {
-                { 1, 7 },{ 2, 9 },{ 3, 5 },{ 4, 9 },
+                { 1, 7 },{ 2, 9 },{ 3, 6 },{ 4, 9 },
                 { 5, 3 },{ 6, 4 },{ 7, 4 },{ 8, 4 },
                 { 9, 5 },{ 10, 6 },{ 11, 7 },{ 12, 5 }
             };
